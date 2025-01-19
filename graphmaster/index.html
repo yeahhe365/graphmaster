@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>GraphMaster</title>
+    <!-- 让移动端等设备在浏览器宽度等比缩放 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- ========== favicon 配置 ========== -->
+    <link rel="apple-touch-icon" sizes="180x180" href="icon/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icon/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icon/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="icon/favicon_io/site.webmanifest">
+    <link rel="shortcut icon" href="icon/favicon_io/favicon.ico" type="image/x-icon">
+    <!-- ========== favicon 配置结束 ========== -->
+
+    <!-- 引入第三方库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- ========== 引入 CodeMirror ========== -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.9/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.9/codemirror.min.js"></script>
+    <!-- 示例使用 JS 模式，你也可引入其他语法模式 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.9/mode/javascript/javascript.min.js"></script>
+
+    <!-- 引入我们自己的CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 在 header 中显示 Logo -->
+    <header>
+        <img src="icon/logo.png" alt="GraphMaster Logo">
+        GraphMaster
+    </header>
+
+    <!-- 主体区域 -->
+    <div id="main">
+        <!-- 左侧：编辑器容器 -->
+        <div id="editor-container">
+            <!-- 工具栏 -->
+            <div id="toolbar">
+                <button id="paste-btn"><i class="fas fa-paste"></i> 粘贴</button>
+                <button id="render-btn"><i class="fas fa-play"></i> 渲染</button>
+                <button id="clear-btn"><i class="fas fa-eraser"></i> 清空</button>
+                <button id="download-btn"><i class="fas fa-download"></i> 下载</button>
+            </div>
+
+            <!-- 用于滚动的编辑器主体 -->
+            <div id="editor-body">
+                <!-- 原 textarea, 仅用于初始化 CodeMirror -->
+                <textarea id="dot-input"></textarea>
+            </div>
+        </div>
+
+        <!-- 分隔线（可拖拽） -->
+        <div id="resizer"></div>
+
+        <!-- 右侧：预览容器 -->
+        <div id="preview-container">
+            <div id="preview-wrapper">
+                <div id="preview"></div>
+            </div>
+            <div id="error"></div>
+        </div>
+    </div>
+
+    <!-- 模态窗口结构 -->
+    <div id="download-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>选择下载格式</h3>
+            <button class="modal-button" data-format="svg">下载SVG</button>
+            <button class="modal-button" data-format="png">下载PNG</button>
+            <button class="modal-button" data-format="pdf">下载PDF</button>
+        </div>
+    </div>
+
+    <!-- 在 body 底部引入我们自己的JS（确保 DOM 已就绪） -->
+    <script src="js/main.js"></script>
+</body>
+</html>
