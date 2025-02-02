@@ -4,13 +4,10 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f0f0f0;
-
-    /* 使 body 占满视口，并且内部使用 flex 布局 */
     height: 100vh;
     display: flex;
     flex-direction: column;
     position: relative;
-    /* 重要: 防止出现浏览器全局滚动条 */
     overflow: hidden;
 }
 
@@ -25,10 +22,9 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0; /* 头部高度固定，不会被挤 */
+    flex-shrink: 0;
 }
 
-/* ========== Logo 样式 ========== */
 header img {
     height: 40px; 
     vertical-align: middle; 
@@ -37,14 +33,12 @@ header img {
 
 /* 主体区域：左右（或上下）分栏布局 */
 #main {
-    /* 让 main 区在垂直方向上分配剩余空间 */
     flex: 1;
     display: flex;
-    overflow: hidden; /* 不出现页面级滚动条 */
-    position: relative; /* 创建定位上下文 */
+    overflow: hidden;
+    position: relative;
 }
 
-/* 编辑器区域、分隔线、预览区域 */
 #editor-container {
     /* 初始占比 33.33% 的宽度（可拖动分隔线改变） */
     flex: 0 0 33.33%;
@@ -52,11 +46,10 @@ header img {
     flex-direction: column;
     border-right: 1px solid #ccc;
     background-color: #ffffff;
-
-    /* 在flex子元素中，防止内容撑开布局 */
     min-width: 0;
     overflow: hidden;
 }
+
 #preview-container {
     flex: 1;
     display: flex;
@@ -64,6 +57,7 @@ header img {
     overflow: hidden;
     position: relative;
 }
+
 #resizer {
     width: 5px;
     background-color: #ccc;
@@ -71,9 +65,9 @@ header img {
     z-index: 1000;
 }
 
-/* ========== 工具栏与编辑器分离 ========== */
+/* 工具栏与编辑器 */
 #toolbar {
-    flex-shrink: 0; /* 固定工具栏高度 */
+    flex-shrink: 0;
     display: flex;
     flex-wrap: nowrap;
     justify-content: flex-start;
@@ -85,13 +79,13 @@ header img {
     overflow: visible;
     z-index: 10000;
 }
+
 #toolbar > * {
     margin: 5px;
 }
 
-/* 代码编辑真正滚动的容器 */
+/* 编辑器主体 */
 #editor-body {
-    /* 占满父容器剩余空间，出现滚动只在这里 */
     flex: 1;
     overflow: auto; 
     display: flex; 
@@ -100,7 +94,7 @@ header img {
     min-height: 0;
 }
 
-/* 按钮、图标按钮通用样式 */
+/* 按钮与图标按钮 */
 button, .icon-button {
     padding: 7.5px 11.25px;
     font-size: 10.5px;
@@ -156,15 +150,15 @@ button i, .icon-button i {
 
 /* 模态窗口样式 */
 .modal {
-    display: none; /* 默认隐藏 */
-    position: fixed; /* 固定定位 */
-    z-index: 20000; /* 确保在最上层 */
+    display: none;
+    position: fixed;
+    z-index: 20000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto; /* 允许滚动 */
-    background-color: rgba(0,0,0,0.5); /* 半透明背景 */
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -211,7 +205,7 @@ button i, .icon-button i {
     background-color: #218838;
 }
 
-/* 响应式设计：小于800px屏幕 */
+/* 响应式设计 */
 @media (max-width: 800px) {
     #main {
         flex-direction: column;
@@ -232,8 +226,6 @@ button i, .icon-button i {
         justify-content: flex-start;
     }
 }
-
-/* 再小一些，小于600px时 */
 @media (max-width: 600px) {
     #toolbar {
         flex-wrap: nowrap;
@@ -250,7 +242,7 @@ button i, .icon-button i {
     }
 }
 
-/* 自定义滚动条样式（只做示例） */
+/* 自定义滚动条样式 */
 #toolbar::-webkit-scrollbar {
     height: 6px;
 }
@@ -265,18 +257,13 @@ button i, .icon-button i {
     background: #555;
 }
 
-/* ========== CodeMirror 相关 ========== */
-
-/* 让 CodeMirror 自身填满父容器 #editor-body */
+/* CodeMirror 相关 */
 .CodeMirror {
     flex: 1;
     border: none;
     min-width: 0; 
-    min-height: 0; 
-    /* 让其高度随父容器走 */
+    min-height: 0;
 }
-
-/* 强制 CodeMirror 内部可滚动（水平+垂直） */
 .CodeMirror-scroll {
     overflow: auto !important;
 }

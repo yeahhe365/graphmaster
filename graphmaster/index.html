@@ -24,14 +24,13 @@
     <!-- ========== 引入 CodeMirror ========== -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.9/codemirror.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.9/codemirror.min.js"></script>
-    <!-- 示例使用 JS 模式，你也可引入其他语法模式 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.9/mode/javascript/javascript.min.js"></script>
 
     <!-- 引入我们自己的CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- 在 header 中显示 Logo -->
+    <!-- 头部 -->
     <header>
         <img src="icon/logo.png" alt="GraphMaster Logo">
         GraphMaster
@@ -39,7 +38,7 @@
 
     <!-- 主体区域 -->
     <div id="main">
-        <!-- 左侧：编辑器容器 -->
+        <!-- 编辑器区域 -->
         <div id="editor-container">
             <!-- 工具栏 -->
             <div id="toolbar">
@@ -49,9 +48,8 @@
                 <button id="download-btn"><i class="fas fa-download"></i> 下载</button>
             </div>
 
-            <!-- 用于滚动的编辑器主体 -->
+            <!-- 编辑器主体 -->
             <div id="editor-body">
-                <!-- 原 textarea, 仅用于初始化 CodeMirror -->
                 <textarea id="dot-input"></textarea>
             </div>
         </div>
@@ -59,7 +57,7 @@
         <!-- 分隔线（可拖拽） -->
         <div id="resizer"></div>
 
-        <!-- 右侧：预览容器 -->
+        <!-- 预览区域 -->
         <div id="preview-container">
             <div id="preview-wrapper">
                 <div id="preview"></div>
@@ -69,17 +67,17 @@
     </div>
 
     <!-- 模态窗口结构 -->
-    <div id="download-modal" class="modal">
+    <div id="download-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
         <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h3>选择下载格式</h3>
+            <span class="close-modal" aria-label="关闭">&times;</span>
+            <h3 id="modal-title">选择下载格式</h3>
             <button class="modal-button" data-format="svg">下载SVG</button>
             <button class="modal-button" data-format="png">下载PNG</button>
             <button class="modal-button" data-format="pdf">下载PDF</button>
         </div>
     </div>
 
-    <!-- 在 body 底部引入我们自己的JS（确保 DOM 已就绪） -->
-    <script src="js/main.js"></script>
+    <!-- 在 body 底部引入我们的JS（使用 defer 确保 DOM 加载完毕） -->
+    <script src="js/main.js" defer></script>
 </body>
 </html>
