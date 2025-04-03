@@ -3,81 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <title>GraphMaster</title>
-    <!-- 让移动端等设备在浏览器宽度等比缩放 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- ========== favicon 配置 ========== -->
+
+    <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="icon/favicon_io/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="icon/favicon_io/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="icon/favicon_io/favicon-16x16.png">
     <link rel="manifest" href="icon/favicon_io/site.webmanifest">
     <link rel="shortcut icon" href="icon/favicon_io/favicon.ico" type="image/x-icon">
-    <!-- ========== favicon 配置结束 ========== -->
 
-    <!-- 引入第三方库 -->
+    <!-- Libs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <!-- Restore jsPDF for PDF download -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- ========== 引入 CodeMirror ========== -->
+    <!-- CodeMirror -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.9/codemirror.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.9/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.9/mode/javascript/javascript.min.js"></script>
 
-    <!-- 引入我们自己的CSS -->
+    <!-- App CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- 头部 -->
+    <!-- Header - Now contains all controls -->
     <header>
-        <img src="icon/logo.png" alt="GraphMaster Logo">
-        GraphMaster
+        <div class="header-left">
+             <img src="icon/logo.png" alt="GraphMaster Logo" class="header-logo">
+             <span class="header-title">GraphMaster</span>
+        </div>
+
+        <div class="header-center" role="toolbar" aria-label="编辑器操作">
+            <button id="paste-btn" class="header-button" title="从剪贴板粘贴 (Paste from Clipboard)"><i class="fas fa-paste"></i> <span class="btn-label">粘贴</span></button>
+            <button id="render-btn" class="header-button" title="渲染并居中图像 (Ctrl/Cmd + Enter)"><i class="fas fa-play"></i> <span class="btn-text btn-label">渲染</span></button>
+            <button id="clear-btn" class="header-button" title="清空编辑器和预览 (Clear All)"><i class="fas fa-eraser"></i> <span class="btn-label">清空</span></button>
+            <button id="download-btn" class="header-button" title="下载图像 (Download Image)" disabled><i class="fas fa-download"></i> <span class="btn-label">下载</span></button>
+            <button id="copy-img-btn" class="header-button" title="复制图像到剪贴板 (Copy Image)" disabled><i class="fas fa-copy"></i> <span class="btn-label">复制图像</span></button>
+        </div>
+
+        <div class="header-right" role="toolbar" aria-label="视图操作">
+             <div class="auto-render-toggle header-control-item" title="自动渲染 (Auto Render)">
+                 <label for="auto-render-checkbox" class="auto-render-label screen-reader-only">自动渲染</label>
+                 <i class="fas fa-magic auto-render-icon" aria-hidden="true"></i>
+                 <input type="checkbox" id="auto-render-checkbox" aria-label="自动渲染开关">
+             </div>
+              <div class="view-controls-group header-control-item">
+                 <button id="zoom-out-btn" class="icon-button header-button" title="缩小 (Zoom Out) (-)" aria-label="缩小"><i class="fas fa-search-minus"></i></button>
+                 <span id="zoom-level-display" class="header-zoom-display" title="当前缩放比例 (Current Zoom Level)">100%</span>
+                 <button id="zoom-in-btn" class="icon-button header-button" title="放大 (Zoom In) (+)" aria-label="放大"><i class="fas fa-search-plus"></i></button>
+                 <button id="reset-view-btn" class="icon-button header-button" title="适应视图 (Fit View) (Double Click)" aria-label="适应视图"><i class="fas fa-expand-arrows-alt"></i></button>
+              </div>
+        </div>
     </header>
 
-    <!-- 主体区域 -->
+    <!-- Main Content -->
     <div id="main">
-        <!-- 编辑器区域 -->
+        <!-- Editor Panel -->
         <div id="editor-container">
-            <!-- 工具栏 -->
-            <div id="toolbar">
-                <button id="paste-btn"><i class="fas fa-paste"></i> 粘贴</button>
-                <button id="render-btn"><i class="fas fa-play"></i> 渲染</button>
-                <button id="clear-btn"><i class="fas fa-eraser"></i> 清空</button>
-                <button id="download-btn"><i class="fas fa-download"></i> 下载</button>
-            </div>
-
-            <!-- 编辑器主体 -->
             <div id="editor-body">
                 <textarea id="dot-input"></textarea>
             </div>
         </div>
 
-        <!-- 分隔线（可拖拽） -->
+        <!-- Resizer Handle -->
         <div id="resizer"></div>
 
-        <!-- 预览区域 -->
+        <!-- Preview Panel -->
         <div id="preview-container">
-            <div id="preview-wrapper">
+            <!-- ========== ADDED FULLSCREEN BUTTON HERE ========== -->
+            <button id="fullscreen-btn" class="preview-action-button" title="全屏/退出全屏 (Fullscreen/Exit)">
+                <i class="fas fa-expand"></i>
+            </button>
+            <!-- =============================================== -->
+            <!-- Preview Wrapper -->
+            <div id="preview-wrapper" tabindex="0" aria-label="预览区域: 可使用鼠标拖拽平移, 滚轮/双指缩放, 双击适应视图. 获取焦点后可使用方向键平移, +/-键缩放." title="拖拽平移, 滚轮/双指缩放, 双击适应. 聚焦后: 方向键平移, +/-缩放">
                 <div id="preview"></div>
             </div>
-            <div id="error"></div>
+            <!-- Error Display Area -->
+            <div id="error" role="alert" aria-live="polite"></div>
         </div>
     </div>
 
-    <!-- 模态窗口结构 -->
-    <div id="download-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <!-- Download Modal -->
+    <div id="download-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" style="display: none;">
         <div class="modal-content">
-            <span class="close-modal" aria-label="关闭">&times;</span>
+            <button class="close-modal" aria-label="关闭" title="关闭 (Esc)">×</button>
             <h3 id="modal-title">选择下载格式</h3>
+            <div class="form-group">
+                <label for="filename-input">文件名:</label>
+                <input type="text" id="filename-input" value="graph" placeholder="graph">
+            </div>
             <button class="modal-button" data-format="svg">下载SVG</button>
-            <button class="modal-button" data-format="png">下载PNG</button>
-            <button class="modal-button" data-format="pdf">下载PDF</button>
+            <button class="modal-button" data-format="png">下载PNG (600 DPI)</button>
+            <button class="modal-button" data-format="pdf">下载PDF (600 DPI)</button>
         </div>
     </div>
 
-    <!-- 在 body 底部引入我们的JS（使用 defer 确保 DOM 加载完毕） -->
+    <!-- Toast Notification Container -->
+    <div id="toast-container"></div>
+
+    <!-- App JS (defer loading) -->
     <script src="js/main.js" defer></script>
 </body>
 </html>
